@@ -8,11 +8,10 @@ class Book
 
   @Time = Time.now
 
-  def initialize (name, author, id)
+  def initialize (name, author, isbn = "n/a")
     @name = name
     @author = author
-    @id = 1000
-    @@id = id +=1
+    @isbn = isbn
   end
 
   def borrow
@@ -23,12 +22,21 @@ class Book
 
   end
 
-  def lent_out?
-
+  def lent_out?(book)
+    lent_out = @@on_shelf
+    lent_out.each do |lent|
+      if lent == book
+        puts "#{book} is not available."
+      else
+        puts "#{book} is available!"
+      end
+    end
   end
 
-  def self.create
-
+  def self.create(name, author, id)
+    new_book = Book.new(name, author, id)
+     @@on_shelf << new_book
+    return new_book
   end
 
   def self.current_due_date
@@ -44,7 +52,8 @@ class Book
   end
 
   def available
-
+    available = @@on_shelf
+    return available.inspect
   end
 
   def self.borrowed
